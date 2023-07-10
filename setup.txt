@@ -65,5 +65,5 @@ or:
 set singularity container in nextflow.config file:
         process.container = "yongjia111/yongjia_gatk4:latest"
         singularity.enabled = true
-        singularity.autoMounts = true ## need to put all data into PWD where nextflow launched, and also chmod to give full permission
+        singularity.autoMounts = true ## need to put all data into PWD where nextflow launched, and also chmod to give full permission (chmod not working, not able to create gatktemp dir)
 Run: srun --export=all -n 1 -c 128  nextflow run main.nf -c nextflow.config -with-singularity
