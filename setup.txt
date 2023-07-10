@@ -36,7 +36,8 @@ cd to where Dockerfile
 vi Dockerfile, add --no-cerificate to wget command
 docker build -t yongjia_gatk4 .
 docker images
-nextflow run main.nf -c nextflow.config -with-docker yongjia_gatk4
+Run: nextflow run main.nf -c nextflow.config -with-docker yongjia_gatk4
+
 ## save and share local docker image
 docker save yongjia_gatk4 > yongjia_gatk4.tar
 ## publish docker image to docker hub repository
@@ -52,13 +53,12 @@ docker save yongjia_gatk4 > yongjia_gatk4.tar
 >>Solution 3; use singularity
 ## run directly from public docker images
 singularity run docker://yongjia111/yongjia_gatk4 gatk ## test
-srun --export=all -n 1 -c 128  nextflow run main.nf -c nextflow.config -with-singularity docker://yongjia111/yongjia_gatk4
+Run: srun --export=all -n 1 -c 128  nextflow run main.nf -c nextflow.config -with-singularity docker://yongjia111/yongjia_gatk4
 
 ## build singularity image locally from public docker image
 singularity pull docker://yongjia111/yongjia_gatk4 ## create yongjia_gatk4_latest.sif file
 or from local docker image
 sudo singularity build yongjia_gatk4.sif docker://yongjia_gatk4:latest
-
 Run: srun --export=all -n 1 -c 128  nextflow run main.nf -c nextflow.config -with-singularity yongjia_gatk4_latest.sif
 
 or:
@@ -66,7 +66,4 @@ set singularity container in nextflow.config file:
         process.container = "yongjia111/yongjia_gatk4:latest"
         singularity.enabled = true
         singularity.autoMounts = true ## need to put all data into PWD where nextflow launched, and also chmod to give full permission
-
 Run: srun --export=all -n 1 -c 128  nextflow run main.nf -c nextflow.config -with-singularity
-
-sudo singularity build yongjia_gatk4.sif docker://yongjia_gatk4:latest
