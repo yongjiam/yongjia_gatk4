@@ -1,0 +1,37 @@
+## guide on how to run nextflow pipepline using different solutions
+## get nextflow required scripts and files
+git clone https://gencore.bio.nyu.edu/variant-calling-pipeline-gatk4/
+
+>>Solution 1: use conda to install all required tools and packages
+Need to install:
+    Nextflow: require version 22.10.x, which requires downgrading other packages
+    GATK4
+    BWA
+    Picard Tools
+    Samtools
+    SnpEff
+    R (dependency for some GATK steps, need to find out all required R packages)
+key notes:
+  --install tools in a new conda environment
+  --after installing picard and snpeff, need to find out the jar files and define PICARD_JAR and SNPEFF_JAR variables
+  --go to the dockerfile to find out what R packages are needed 
+  --or run R in docker images to find installed packages and install them manually in conda R environment
+      In R: 
+      installed <- as.data.frame(installed.packages())
+      isntalled$Package
+      write.csv(installed, 'installed_previously.csv')
+      installedPreviously <- read.csv('installed_previously.csv')
+      install.packages(installedPreviously$Package)
+In setonix Run: 
+export SNPEFF_JAR=/scratch/pawsey0399/yjia/tools/snpEff/snpEff.jar
+export PICARD_JAR=/scratch/pawsey0399/yjia/tools/miniconda3/envs/nf-env/share/picard-2.18.29-0/picard.jar
+
+NFILE=/scratch/pawsey0399/yjia/tools/variant-calling-pipeline-gatk4/main3.nf
+CONFIG=/scratch/pawsey0399/yjia/tools/variant-calling-pipeline-gatk4/nextflow3.config
+
+srun --export=all -n 1 -c 128  nextflow run main3.nf -c nextflow3.config
+
+>>Solution 2: use docker image
+
+>>Solution 3; use singularity
+
