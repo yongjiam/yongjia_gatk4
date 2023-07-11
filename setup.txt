@@ -31,6 +31,12 @@ CONFIG=/scratch/pawsey0399/yjia/tools/variant-calling-pipeline-gatk4/nextflow3.c
 
 srun --export=all -n 1 -c 128  nextflow run main3.nf -c nextflow3.config
 
+##### save working conda environment and install elsewhere
+conda activate <environment_name>
+conda env export > environment.yaml
+conda env create -f environment.yaml
+conda activate <environment_name>
+
 >>Solution 2: use docker image
 cd to where Dockerfile
 vi Dockerfile, add --no-cerificate to wget command
