@@ -22,6 +22,10 @@ key notes:
       write.csv(installed, 'installed_previously.csv')
       installedPreviously <- read.csv('installed_previously.csv')
       install.packages(installedPreviously$Package)
+    --in main.nf, command:
+        java -jar $SNPEFF_JAR -v      -dataDir /data/shunlin/nextflow_output/snpeff_data      RGT_split       Barley-P1_S60_L001_filtered_snps_2.vcf > Barley-P1_S60_L001_filtered_snps.ann.vcf
+        remove -dataDir, and replace with -c /path/to/snpeff_config/file
+
 In setonix Run: 
 export SNPEFF_JAR=/scratch/pawsey0399/yjia/tools/snpEff/snpEff.jar
 export PICARD_JAR=/scratch/pawsey0399/yjia/tools/miniconda3/envs/nf-env/share/picard-2.18.29-0/picard.jar
