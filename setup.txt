@@ -24,7 +24,7 @@ key notes:
       install.packages(installedPreviously$Package)
     --in main.nf, command:
         java -jar $SNPEFF_JAR -v      -dataDir /data/shunlin/nextflow_output/snpeff_data      RGT_split       Barley-P1_S60_L001_filtered_snps_2.vcf > Barley-P1_S60_L001_filtered_snps.ann.vcf
-        remove -dataDir, and replace with -c /path/to/snpeff_config/file
+        remove -dataDir (the data_dir was defined in snpeff.config file, defaul as ./data; set dataDir will overide that set in config file, also try to avoid set -c new.config, for unknown reason this             does not work)
 
 In setonix Run: 
 export SNPEFF_JAR=/scratch/pawsey0399/yjia/tools/snpEff/snpEff.jar
