@@ -5,6 +5,10 @@ conda env export > environment.yml
 Bootstrap: docker
 From: continuumio/miniconda3   # Use the base Docker image that includes Conda
 
+%files
+    # Mount your local file inside the container
+    /data/tools/conda_env_export/cnvpytor.yml /etc/cnvpytor.yml
+
 %environment
     export PATH="/opt/conda/bin:$PATH"
 %post
