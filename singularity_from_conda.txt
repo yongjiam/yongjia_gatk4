@@ -1,0 +1,14 @@
+conda env export > environment.yml
+
+## create singularity description file: singularity
+
+Bootstrap: docker
+From: continuumio/miniconda3   # Use the base Docker image that includes Conda
+
+%environment
+    export PATH="/opt/conda/bin:$PATH"
+%post
+    conda env create --file environment.yml
+
+### build singularity container
+sudo singularity build my_container.sif Singularity
