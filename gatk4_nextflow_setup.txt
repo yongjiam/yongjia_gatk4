@@ -9,6 +9,17 @@ srun --export=all -n 1 -c 10 bwa index genome_database/genome.fasta
 PJAR=/scratch/pawsey0399/yjia/tools/miniconda3/envs/nf-env/share/picard-2.18.29-0/picard.jar
 srun --export=all -n 1 -c 10 java -jar $PJAR CreateSequenceDictionary R=RGT_V1.fasta O=RGT_V1.dict
 
+## prepare snpEff database
+wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip ## Download latest version
+get reference genome fasta sequence file (xxx.fa/xxx.fa.gz) to ./genomes
+get gff3 file (xxx.gff3/xxx.gff3.gz) to ./xxx/genes.gff3 or genes.gff3.gz
+copy cds.fa protein.fa to ./xxx/cds.fa protein.fa
+
+echo "xxx.genome : xxx" >> snpEff.config ## add to config file
+
+java -jar snpEff.jar build -gff3 -v CDC_scaffold1511 ## build database
+java -jar snpEff.jar dump CDC_scaffold1511 | less  ## check database
+
 >>Solution 1: use conda to install all required tools and packages
 Need to install:
     Nextflow: require version 22.10.x, which requires downgrading other packages
