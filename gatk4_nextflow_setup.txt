@@ -1,6 +1,13 @@
 ## guide on how to run nextflow pipepline using different solutions
 ## get nextflow required scripts and files
 git clone https://gencore.bio.nyu.edu/variant-calling-pipeline-gatk4/
+>>> prepare ref genome database
+## index genome fasta for bwa mapping
+srun --export=all -n 1 -c 10 bwa index genome_database/genome.fasta
+
+## create picard dictionary
+PJAR=/scratch/pawsey0399/yjia/tools/miniconda3/envs/nf-env/share/picard-2.18.29-0/picard.jar
+srun --export=all -n 1 -c 10 java -jar $PJAR CreateSequenceDictionary R=RGT_V1.fasta O=RGT_V1.dict
 
 >>Solution 1: use conda to install all required tools and packages
 Need to install:
