@@ -95,3 +95,7 @@ set singularity container in nextflow.config file:
         singularity.enabled = true
         singularity.autoMounts = true ## need to put all data into PWD where nextflow launched, and also chmod to give full permission (chmod not working, not able to create gatktemp dir)
 Run: srun --export=all -n 1 -c 128  nextflow run main.nf -c nextflow.config -with-singularity
+
+### merge multiple vcf files
+bcftools view file.vcf -Oz -o file.vcf.gz
+bcftools merge file1.vcf.gz file2.vcf.gz .... -o merged.vcf.gz
