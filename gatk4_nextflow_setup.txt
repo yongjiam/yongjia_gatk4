@@ -99,4 +99,4 @@ Run: srun --export=all -n 1 -c 128  nextflow run main.nf -c nextflow.config -wit
 ### merge multiple vcf files
 bcftools view file.vcf -Oz -o file.vcf.gz
 bcftools index file.vcf.gz
-bcftools merge file1.vcf.gz file2.vcf.gz .... -o merged.vcf.gz
+bcftools merge trimmed_Barley-P1_filtered_indels_2.vcf.gz trimmed_Barley-P3_filtered_indels_2.vcf.gz -Ov | gzip > P1_P3_merged_filtered_indels_2.vcf.gz
