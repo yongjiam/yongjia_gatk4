@@ -97,6 +97,6 @@ set singularity container in nextflow.config file:
 Run: srun --export=all -n 1 -c 128  nextflow run main.nf -c nextflow.config -with-singularity
 
 ### merge multiple vcf files
-bcftools view file.vcf -Oz -o file.vcf.gz
+bcftools view file.vcf -Oz -o file.vcf.gz  ## the vcf.gz file is not BGZF
 bcftools index file.vcf.gz
 bcftools merge trimmed_Barley-P1_filtered_indels_2.vcf.gz trimmed_Barley-P3_filtered_indels_2.vcf.gz -Ov | gzip > P1_P3_merged_filtered_indels_2.vcf.gz
