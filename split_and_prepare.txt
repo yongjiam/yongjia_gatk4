@@ -1,3 +1,9 @@
-##
+## split input files
 split -a 3 -d -l 2 new_pars input_
 
+## mkdir and mv each input split
+ls input*|while read R;
+do
+	mkdir $R"_files"
+	cat $R| while read P1 P2; do mv $P1 $P2 $R"_files";done
+done
