@@ -3,7 +3,9 @@
 
 ## install required tools from conda env file
 <pre >
-> conda env create -f gatk4_seto_nf_env.yaml
+  ```bash
+  /scratch/pawsey0399/cxiao/tools
+  conda env create -f gatk4_seto_nf_env.yaml
+  ```
 </pre>
-
-> test quoting
+## prepare input files
