@@ -9,3 +9,6 @@
 ```
 </pre>
 ## prepare input files
+```bash
+/scratch/pawsey0399/cxiao/WGS/01.RawData
+```
