@@ -3,7 +3,7 @@
 
 ## install required tools from conda env file
 <pre >
-  > conda env create -f gatk4_seto_nf_env.yaml
+> conda env create -f gatk4_seto_nf_env.yaml
 </pre>
 
 > test quoting
