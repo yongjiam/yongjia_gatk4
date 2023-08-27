@@ -1,14 +1,18 @@
 # User guide
 **Guide on setting up and running GATK4 pipeline in Setonix using lupin WGS data as an example**
-# useful resources
-### https://gencore.bio.nyu.edu/variant-calling-pipeline-gatk4/
-### https://github.com/gencorefacility/variant-calling-pipeline-gatk4
-### https://eriqande.github.io/eca-bioinf-handbook/
+## useful resources
+#### https://gencore.bio.nyu.edu/variant-calling-pipeline-gatk4/
+#### https://github.com/gencorefacility/variant-calling-pipeline-gatk4
+#### https://eriqande.github.io/eca-bioinf-handbook/
 
 ## install required tools from conda env file
 ```bash
 /scratch/pawsey0399/cxiao/tools
+git clone https://github.com/gencorefacility/variant-calling-pipeline-gatk4
+cp variant-calling-pipeline-gatk4/bin/parse_metrics.sh your/active/environment/path/
+
 conda env create -f gatk4_seto_nf_env.yaml
+conda activate nf-env
 ```
 ## prepare input files
 ```bash
