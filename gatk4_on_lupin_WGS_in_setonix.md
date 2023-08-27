@@ -14,6 +14,18 @@ cp variant-calling-pipeline-gatk4/bin/parse_metrics.sh your/active/environment/p
 conda env create -f gatk4_seto_nf_env.yaml
 conda activate nf-env
 ```
+## fastqc check
+```bash
+## fastqc.sh
+find /scratch/pawsey0399/yjia/skylar/WGS/ -name "*fq.gz"|grep trimmed| while read R;
+do
+	fastqc $R -o raw_fastqc_output -t 128
+done
+
+## multiqc.sh
+conda activate bio
+srun --export=all -n 1 -c 64 multiqc -i skylar_raw_qc -n raw_qc raw_fastqc_output &> multiqc_log.txt
+```
 ## prepare input files
 ```bash
 ## workdir
