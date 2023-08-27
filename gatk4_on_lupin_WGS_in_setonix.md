@@ -31,8 +31,51 @@ do
 --thread 128
 done < SPLIT
 ```
-## Run GATK nextflow pipeline
+## Run GATK nextflow
 ```bash
 ## split jobs for setonix
+find fastq_trimmed -name "*.fq.gz" | sort | paste - - > new_pairs
+split -a 3 -d -l 1 new_pairs input_
 
+## mv.sh
+ls input*|while read R;
+do
+	mkdir $R"_files"
+	cat $R| while read P1 P2; do mv $P1 $P2 $R"_files";done
+done
+
+## prepare nextflow
+for i in $(ls --color=never -d input*/);do cp nextflow.config $i;done
+for i in $(ls --color=never -d input*/);do VAR=$(basename $i);sed -i "s/IN_DIR/$VAR/" $i"nextflow.config";done
+
+for i in $(ls --color=never -d input*/);do cp nextflow.conf $i;done
+for i in $(ls --color=never -d input*/);do VAR=$(basename $i);sed -i "s/INPUT/$VAR/" $i"nextflow.conf";done
+
+for i in $(ls --color=never -d input*/);do cp main.nf $i;done
+
+## submit jobs
+for i in $(ls --color=never -d input*/);do cd $i;sbatch nextflow.conf;cd -;done
 ```
+## process results
+```bash
+## check which jobs with errors
+for file in ./input_*_files/slurm*;do if grep -q "error" $file; then echo $file" contains error";fi;done > TMP
+
+## copy annotated snp vcf files
+find . input_*_output/out/snpeff/ -type f -name "*ann.vcf" | grep -v nextflow_work_dir | while read R;do cp $R /scratch/pawsey0399/yjia/skylar/GATK_output2;done
+
+## compress, index, and merge vcf
+bcftools view file.vcf -Oz -o file.vcf.gz
+bcftools index file.vcf.gz
+bcftools merge file*.vcf.gz -Ov | gzip > merged.files.vcf.gz
+```
+
+## SNP marker filteration using plink
+```bash
+## Convert SNP vcf file into plink binary file
+plink --vcf input.vcf --make-bed --allow-extra-chr --double-id --out output_prefix
+
+## filter snp by MAF and missingness
+plink --bfile output_prefix --maf 0.05 --geno 0.2 --make-bed --out filtered_output_prefix
+```
+
