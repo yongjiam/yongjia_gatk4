@@ -78,4 +78,56 @@ plink --vcf input.vcf --make-bed --allow-extra-chr --double-id --out output_pref
 ## filter snp by MAF and missingness
 plink --bfile output_prefix --maf 0.05 --geno 0.2 --make-bed --out filtered_output_prefix
 ```
+## GWAS using rMVP
+# https://github.com/xiaolei-lab/rMVP
+```bash
+## install rMVP
+conda create -n rMVP r=4.2
+conda activate rMVP
+conda install -c conda-forge r-rmvp
+```
+```R
+## https://github.com/yongjiam/chickpea_acid_soil/blob/main/rMVP_gwas.ipynb
+library(rMVP)
+
+## transform genotype vcf file, Full-featured function (Recommended)
+MVP.Data(fileVCF="input.genotype.vcf",
+         fileKin=FALSE,
+         filePC=FALSE,
+         out="mvp.genotype"
+         )
+
+## read genotye and phenotype data
+genotype <- attach.big.matrix("mvp.genotype.desc")
+phenotype <- read.table("input.phenotype",head=TRUE)
+map <- read.table("mvp.genotype.map" , head = TRUE)
+
+## run GWAS
+for(i in 2:ncol(phenotype)){
+  imMVP <- MVP(
+    phe=phenotype[, c(1, i)],
+    geno=genotype,
+    map=map,
+    #K=Kinship,
+    #CV.GLM=Covariates,
+    #CV.MLM=Covariates,
+    #CV.FarmCPU=Covariates,
+    nPC.GLM=5,
+    nPC.MLM=3,
+    nPC.FarmCPU=3,
+    priority="speed",
+    #ncpus=10,
+    vc.method="BRENT",
+    maxLoop=10,
+    method.bin="static",
+    #permutation.threshold=TRUE,
+    #permutation.rep=100,
+    threshold=0.05,
+    method=c("GLM", "MLM", "FarmCPU"),
+    #file.output=c("pmap", "pmap.signal", "plot", "log")
+    file.output=TRUE
+  )
+  gc()
+}
+```
 
