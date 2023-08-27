@@ -22,7 +22,7 @@ do
 	fastqc $R -o raw_fastqc_output -t 128
 done
 
-## multiqc.sh
+## multiqc.conf
 conda activate bio
 srun --export=all -n 1 -c 64 multiqc -i skylar_raw_qc -n raw_qc raw_fastqc_output &> multiqc_log.txt
 ```
