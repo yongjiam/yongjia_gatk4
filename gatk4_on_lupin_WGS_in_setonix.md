@@ -87,7 +87,7 @@ plink --vcf input.vcf --make-bed --allow-extra-chr --double-id --out output_pref
 plink --bfile output_prefix --maf 0.05 --geno 0.2 --make-bed --out filtered_output_prefix
 ```
 ## GWAS using rMVP
-# https://github.com/xiaolei-lab/rMVP
+### https://github.com/xiaolei-lab/rMVP
 ```bash
 ## install rMVP
 conda create -n rMVP r=4.2
