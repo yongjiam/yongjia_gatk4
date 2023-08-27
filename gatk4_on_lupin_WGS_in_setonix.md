@@ -75,7 +75,7 @@ find . input_*_output/out/snpeff/ -type f -name "*ann.vcf" | grep -v nextflow_wo
 ## compress, index, and merge vcf
 bcftools view file.vcf -Oz -o file.vcf.gz
 bcftools index file.vcf.gz
-bcftools merge file*.vcf.gz -Ov | gzip > merged.files.vcf.gz
+bcftools merge file*.vcf.gz -Oz > merged.files.vcf.gz
 ```
 
 ## SNP marker filteration using plink
