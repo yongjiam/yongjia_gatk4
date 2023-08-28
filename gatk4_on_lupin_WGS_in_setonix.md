@@ -115,7 +115,11 @@ plink --vcf input.vcf --make-bed --allow-extra-chr --double-id --out output_pref
 plink --bfile output_prefix --maf 0.05 --geno 0.2 --make-bed --out filtered_output_prefix
 
 ## population stratification analyses
+plink --bfile filtered_output_prefix --genome --out filtered_output_prefix --allow-no-sex --allow-extra-chr
+plink --bfile filtered_output_prefix --read-genome filtered_output_prefix.genome --cluster --ppc 0.05 --allow-no-sex --allow-extra-chr
 
+## association anlayses with phenotype and population clustering; --mh requires control/case information
+plink --bfile filtered_output_prefix --pheno your.phe --within plink.cluster --assoc --adjust --allow-no-sex --allow-extra-chr --out GWAS_output
 ```
 ## GWAS using rMVP
 ### https://github.com/xiaolei-lab/rMVP
