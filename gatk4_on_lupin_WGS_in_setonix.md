@@ -91,6 +91,12 @@ cat resume_submit_again |cut -d '/' -f1|while read R;do cd $R;sbatch nextflow.co
 ## check which jobs with errors
 for file in ./input_*_files/slurm*;do if grep -q "error" $file; then echo $file" contains error";fi;done > TMP
 
+## save deduplicated bam for later use
+find . -type d -name "dedup_sorted"|while read R;do mv $R/* dedup_bam_sorted/;done
+
+## save recallibriated bam for later use
+find . -type d -name "bqsr"|while read R;do mv $R/* recal_bams/;done
+
 ## copy annotated snp vcf files
 find . input_*_output/out/snpeff/ -type f -name "*ann.vcf" | grep -v nextflow_work_dir | while read R;do cp $R /scratch/pawsey0399/yjia/skylar/GATK_output2;done
 
