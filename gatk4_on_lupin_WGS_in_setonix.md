@@ -78,6 +78,12 @@ for i in $(ls --color=never -d input*/);do cd $i;sbatch nextflow.conf;cd -;done
 ```
 ## process results
 ```bash
+## find succeeded runs
+for file in ./input_*_files/slurm*;do if grep -q "Succeeded" $file; then echo $file" succeeded";fi;done > TMP_succeeded
+
+## find resumed runs
+find input_*_files/ -name "nextflow.conf" -type f |while read R;do if grep -q "resume" $R;then echo $R;fi;done > TMP_resumed_run
+
 ## check which jobs with errors
 for file in ./input_*_files/slurm*;do if grep -q "error" $file; then echo $file" contains error";fi;done > TMP
 
