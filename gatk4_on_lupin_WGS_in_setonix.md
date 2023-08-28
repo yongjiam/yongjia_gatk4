@@ -84,6 +84,10 @@ for file in ./input_*_files/slurm*;do if grep -q "Succeeded" $file; then echo $f
 ## find resumed runs
 find input_*_files/ -name "nextflow.conf" -type f |while read R;do if grep -q "resume" $R;then echo $R;fi;done > TMP_resumed_run
 
+cat TMP_resumed_run|cut -d '/' -f1|while read R;do grep $R TMP_succeeded ;done
+grep -f running_jobs -v TMP_resumed_run > resume_submit_again
+cat resume_submit_again |cut -d '/' -f1|while read R;do cd $R;sbatch nextflow.conf;cd -;done
+
 ## check which jobs with errors
 for file in ./input_*_files/slurm*;do if grep -q "error" $file; then echo $file" contains error";fi;done > TMP
 
