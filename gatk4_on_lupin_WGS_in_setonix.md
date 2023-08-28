@@ -113,6 +113,9 @@ plink --vcf input.vcf --make-bed --allow-extra-chr --double-id --out output_pref
 
 ## filter snp by MAF and missingness
 plink --bfile output_prefix --maf 0.05 --geno 0.2 --make-bed --out filtered_output_prefix
+
+## population stratification analyses
+
 ```
 ## GWAS using rMVP
 ### https://github.com/xiaolei-lab/rMVP
