@@ -4,6 +4,7 @@
 #### https://gencore.bio.nyu.edu/variant-calling-pipeline-gatk4/
 #### https://github.com/gencorefacility/variant-calling-pipeline-gatk4
 #### https://eriqande.github.io/eca-bioinf-handbook/
+#### https://www.jianshu.com/p/aefd9a0eb67d
 
 ## install required tools from conda env file
 ```bash
@@ -107,6 +108,9 @@ bcftools merge file*.vcf.gz -Oz > merged.files.vcf.gz
 ```
 
 ## SNP marker filteration using plink
+#### https://zzz.bwh.harvard.edu/plink/tutorial.shtml
+#### https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6001694/
+
 ```bash
 ## Convert SNP vcf file into plink binary file
 plink --vcf input.vcf --make-bed --allow-extra-chr --double-id --out output_prefix
