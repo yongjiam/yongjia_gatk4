@@ -4,7 +4,7 @@
 #### https://gencore.bio.nyu.edu/variant-calling-pipeline-gatk4/
 #### https://github.com/gencorefacility/variant-calling-pipeline-gatk4
 #### https://eriqande.github.io/eca-bioinf-handbook/
-#### https://www.jianshu.com/p/aefd9a0eb67d
+#### https://www.jianshu.com/p/aefd9a0eb67d/
 
 ## install required tools from conda env file
 ```bash
