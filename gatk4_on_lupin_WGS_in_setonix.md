@@ -125,6 +125,9 @@ plink --bfile filtered_output_prefix --read-genome filtered_output_prefix.genome
 ## association anlayses with phenotype and population clustering; --mh requires control/case information
 plink --bfile filtered_output_prefix --pheno your.phe --within plink.cluster --assoc --adjust --allow-no-sex --allow-extra-chr --out GWAS_output
 ```
+## bcftools cheatsheet
+#### https://gist.github.com/elowy01/93922762e131d7abd3c7e8e166a74a0b
+
 ## GWAS using rMVP
 ### https://github.com/xiaolei-lab/rMVP
 ```bash
