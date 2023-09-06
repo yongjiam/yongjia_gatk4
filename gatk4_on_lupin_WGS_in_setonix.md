@@ -136,6 +136,27 @@ conda create -n rMVP r=4.2
 conda activate rMVP
 conda install -c conda-forge r-rmvp
 ```
+## using rMVP in jupyter lab in my nimbus server
+```bash
+# install rMVP in conda, from scratch
+conda create --name rMVP
+conda activate rMVP
+conda install -c conda-forge r-base ## current default version 4.3.1
+R
+# within R, install IRkernel
+install.packages("IRkernel")
+IRkernel::installspec()
+# within R, install rMVP
+install.packages("rMVP")
+q()
+# launch jupyter lab
+jupyter-lab --ip 0.0.0.0 --port 8888 --no-browser ## note the token key on your screen
+
+# open your browser, paste the address below, and input the token:
+http://146.118.64.19:8888/lab/
+
+```
+## running rMVP
 ```R
 ## https://github.com/yongjiam/chickpea_acid_soil/blob/main/rMVP_gwas.ipynb
 library(rMVP)
