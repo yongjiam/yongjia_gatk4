@@ -124,6 +124,9 @@ plink --bfile filtered_output_prefix --read-genome filtered_output_prefix.genome
 
 ## association anlayses with phenotype and population clustering; --mh requires control/case information
 plink --bfile filtered_output_prefix --pheno your.phe --within plink.cluster --assoc --adjust --allow-no-sex --allow-extra-chr --out GWAS_output
+
+## filter genotype for target chromosome id only
+plink --bfile filtered_updated_large_snp --chr $(cat chromosome_id.txt) --make-bed --out chrosome_only_genotype --allow-no-sex --allow-extra-chr
 ```
 ## bcftools cheatsheet
 #### https://gist.github.com/elowy01/93922762e131d7abd3c7e8e166a74a0b
