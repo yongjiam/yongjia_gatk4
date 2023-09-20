@@ -102,9 +102,9 @@ find . -type d -name "bqsr"|while read R;do mv $R/* recal_bams/;done
 find . input_*_output/out/snpeff/ -type f -name "*ann.vcf" | grep -v nextflow_work_dir | while read R;do cp $R /scratch/pawsey0399/yjia/skylar/GATK_output2;done
 
 ## compress, index, and merge vcf
-bcftools view file.vcf -Oz -o file.vcf.gz
-bcftools index file.vcf.gz
-bcftools merge file*.vcf.gz -Oz > merged.files.vcf.gz
+bcftools view file.vcf -Oz --threads 30 -o file.vcf.gz
+bcftools index file.vcf.gz --threads 30
+bcftools merge file*.vcf.gz -Oz --threads 30 > merged.files.vcf.gz
 ```
 
 ## SNP marker filteration using plink
