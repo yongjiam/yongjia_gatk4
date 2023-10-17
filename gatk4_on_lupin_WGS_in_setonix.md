@@ -76,6 +76,28 @@ for i in $(ls --color=never -d input*/);do cp main.nf $i;done
 
 ## submit jobs
 for i in $(ls --color=never -d input*/);do cd $i;sbatch nextflow.conf;cd -;done
+
+## nextflow.conf
+#!/bin/bash --login
+
+#SBATCH --job-name=input_004_files
+#SBATCH --partition=long
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=128
+#SBATCH --time=60:00:00
+#SBATCH --account=pawsey0399
+###SBATCH --mem=64G
+#SBATCH --exclusive
+#SBATCH --export=NONE
+
+##activate env
+conda activate nf-env
+
+export SNPEFF_JAR=/scratch/pawsey0399/yjia/tools/snpEff/snpEff.jar
+export PICARD_JAR=/scratch/pawsey0399/yjia/tools/miniconda3/envs/nf-env/share/picard-2.18.29-0/picard.jar
+
+srun --export=all -n 1 -c 128  nextflow run main.nf -c nextflow.config
 ```
 ## process results
 ```bash
