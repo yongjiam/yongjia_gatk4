@@ -116,7 +116,7 @@ bcftools merge file*.vcf.gz -Oz --threads 30 > merged.files.vcf.gz
 plink --vcf input.vcf --make-bed --allow-extra-chr --double-id --out output_prefix
 
 ## filter snp by MAF and missingness
-plink --bfile output_prefix --maf 0.05 --geno 0.2 --make-bed --out filtered_output_prefix
+plink --bfile output_prefix --maf 0.05 --geno 0.2 --make-bed --out filtered_output_prefix --allow-extra-chr
 
 ## population stratification analyses
 plink --bfile filtered_output_prefix --genome --out filtered_output_prefix --allow-no-sex --allow-extra-chr
