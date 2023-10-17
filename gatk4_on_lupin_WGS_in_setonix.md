@@ -52,7 +52,76 @@ do
 --thread 128
 done < SPLIT
 ```
-## Run GATK nextflow
+
+## Solution 1 = Run GATK step-by-step
+```bash
+#!/bin/bash --login
+
+#SBATCH --job-name=S100
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=15
+#SBATCH --account=ubuntu
+#SBATCH --mem=50G
+#SBATCH --export=NONE
+
+source /data/tools/miniconda3/bin/activate nf-env
+export REF=/data/skylar/Reference_genome_old/NLL_v2.fa
+export PJAR=/data/tools/miniconda3/envs/nf-env/share/picard-2.18.29-0/picard.jar
+srun --export=all -n 1 -c 15 bwa mem -M -t 15 -R '@RG\tID:NLL100\tLB:NLL100\tPL:ILLUMINA\tPM:HISEQ\tSM:NLL100' $REF NLL100_1.fq.gz NLL100_2.fq.gz |samtools view -@ 6 -Sb - | samtools sort -@ 6 -o NLL100.bam ## read alignment
+srun --export=all -n 1 -c 15 gatk MarkDuplicatesSpark -I NLL100.bam -O mark_fix_NLL100.bam ## mark duplicates
+srun --export=all -n 1 -c 15 rm NLL100.bam
+srun --export=all -n 1 -c 15 gatk FixMateInformation -MC true -I mark_fix_NLL100.bam ## fixmate
+srun --export=all -n 1 -c 15 samtools index -@ 15 mark_fix_NLL100.bam ## index bam
+srun --export=all -n 1 -c 15 rm mark_fix_NLL100.bam.sbi ## this index file interferes with downstream
+srun --export=all -n 1 -c 15 gatk HaplotypeCallerSpark -R $REF -I mark_fix_NLL100.bam -ERC GVCF -O mark_fix_NLL100.bam.g.vcf ## haplotype call
+srun --export=all -n 1 -c 15 rm mark_fix_NLL100.bam
+srun --export=all -n 1 -c 15 bgzip -@ 15 mark_fix_NLL100.bam.g.vcf ## compress gvcf file
+srun --export=all -n 1 -c 5 gatk IndexFeatureFile -I mark_fix_NLL100.bam.g.vcf.gz ## index gvcf file
+
+## combine gvcfs for multiple samples
+srun --export=all -n 1 -c 15 gatk --java-options "-Xmx60g -Xms60g" GenomicsDBImport \ ## use ***GenomicsDBImport*** generate genomicsdb for each chromosome downstream genotype call
+	--genomicsdb-workspace-path CHROM_NAME \
+       -V mark_fix_NLL001.bam.g.vcf.gz \
+       -V mark_fix_NLL002.bam.g.vcf.gz \
+       -V mark_fix_NLL003.bam.g.vcf.gz \
+	...
+	-L CHROM_NAME
+Or srun --export=all -n 1 -c 15 gatk CombineGVCFs \ ## use ***CombineGVCFs***
+	   -R ../Reference_genome/NLL_v2.fa \
+       -V mark_fix_NLL001.bam.g.vcf.gz \
+       -V mark_fix_NLL002.bam.g.vcf.gz \
+       -V mark_fix_NLL003.bam.g.vcf.gz \
+	...
+	-O merged.g.vcf.gz
+
+## generate genotype vcf
+srun --export=all -n 1 -c 15 gatk --java-options "-Xmx40g" GenotypeGVCFs \
+	-R /data/skylar/Reference_genome/NLL_v2.fa \
+	-V NLL_old.g.vcf.gz \
+	-O NLL_old.raw.vcf.gz
+Or srun --export=all -n 1 -c 15 gatk --java-options "-Xmx64g" GenotypeGVCFs \
+	-R /scratch/pawsey0399/yjia/skylar/Reference_genome/NLL_v2.fa \
+	-V gendb://HiC_scaffold_10 \
+	-O HiC_scaffold_10.raw.vcf.gz
+
+## concat multiple chromosomes vcf
+srun --export=all -n 1 -c 64 bcftools concat -f vcf_file_list \
+	-o 300NLL_merged.vcf.gz \
+	--threads 64
+
+## filter vcf
+srun --export=all -n 1 -c 64 gatk VariantFiltration \
+	-R /scratch/pawsey0399/yjia/skylar/Reference_genome/NLL_v2.fa \
+	-V HiC_scaffold_20.raw.vcf.gz \
+	-O filtered_HiC_scaffold_20.raw.vcf.gz \
+	--filter-name "QD_filter" -filter "QD < 2.0" \
+	--filter-name "FS_filter" -filter "FS > 60.0" \
+	--filter-name "MQ_filter" -filter "MQ < 40.0"
+```
+
+## Solution 2 = Run GATK nextflow
 ```bash
 ## split jobs for setonix
 find fastq_trimmed -name "*.fq.gz" | sort | paste - - > new_pairs
