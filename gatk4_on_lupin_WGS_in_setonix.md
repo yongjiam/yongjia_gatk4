@@ -209,7 +209,7 @@ plink --vcf input.vcf --make-bed --allow-extra-chr --double-id --out output_pref
 ## filter snp by MAF and missingness
 plink --bfile output_prefix --maf 0.05 --geno 0.2 --make-bed --out filtered_output_prefix --allow-extra-chr
 
-## filter snp by chromosomes
+## filter snp by chromosomes CHROM=HiC_scaffold_1 HiC_scaffold_10 HiC_scaffold_11 .......
 plink --bfile filtered_merged_snps --chr $CHROM --out chromosome_only_genotype --make-bed --allow-extra-chr
 
 ## population stratification analyses
