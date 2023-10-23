@@ -269,11 +269,28 @@ MVP.Data(fileVCF="input.genotype.vcf",
          filePC=FALSE,
          out="mvp.genotype"
          )
+## or plink binary genotype data
+# Full-featured function (Recommended)
+MVP.Data(fileBed="LD_pruned",
+         filePhe=NULL,
+         fileKin=FALSE,
+         filePC=FALSE,       
+         #priority="speed",
+         #maxLine=10000,
+         out="mvp.plink"
+         )
 
 ## read genotye and phenotype data
 genotype <- attach.big.matrix("mvp.genotype.desc")
 phenotype <- read.table("input.phenotype",head=TRUE)
 map <- read.table("mvp.genotype.map" , head = TRUE)
+
+## calculate kinship and principle components from genotype data
+MVP.Data.Kin(TRUE, mvp_prefix='mvp.plink', out='mvp')
+Kinship <- attach.big.matrix("mvp.kin.desc")
+
+MVP.Data.PC(TRUE, mvp_prefix='mvp.plink', out='mvp', pcs.keep=10)
+Covariates_PC <- bigmemory::as.matrix(attach.big.matrix("mvp.pc.desc"))
 
 ## run GWAS
 for(i in 2:ncol(phenotype)){
@@ -281,10 +298,10 @@ for(i in 2:ncol(phenotype)){
     phe=phenotype[, c(1, i)],
     geno=genotype,
     map=map,
-    #K=Kinship,
-    #CV.GLM=Covariates,
-    #CV.MLM=Covariates,
-    #CV.FarmCPU=Covariates,
+    K=Kinship,
+    CV.GLM=Covariates_PC,
+    CV.MLM=Covariates_PC,
+    CV.FarmCPU=Covariates_PC,
     nPC.GLM=5,
     nPC.MLM=3,
     nPC.FarmCPU=3,
