@@ -207,7 +207,7 @@ bcftools merge file*.vcf.gz -Oz --threads 30 > merged.files.vcf.gz
 plink --vcf input.vcf --make-bed --allow-extra-chr --double-id --out output_prefix
 
 ## filter snp by MAF and missingness
-plink --bfile output_prefix --maf 0.05 --geno 0.2 --make-bed --out filtered_output_prefix --allow-extra-chr
+plink --bfile output_prefix --maf 0.05 --geno 0.2 --mind 0.2 --make-bed --out filtered_output_prefix --allow-extra-chr ## geno missing, mind individual missing, maf minor allele missing
 
 ## filter snp by chromosomes CHROM=HiC_scaffold_1 HiC_scaffold_10 HiC_scaffold_11 .......
 plink --bfile filtered_merged_snps --chr $CHROM --out chromosome_only_genotype --make-bed --allow-extra-chr
