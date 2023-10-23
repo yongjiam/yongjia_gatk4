@@ -221,6 +221,11 @@ plink --bfile filtered_output_prefix --pheno your.phe --within plink.cluster --a
 
 ## filter genotype for target chromosome id only
 plink --bfile filtered_updated_large_snp --chr $(cat chromosome_id.txt) --make-bed --out chrosome_only_genotype --allow-no-sex --allow-extra-chr
+
+## prune snp based on LD calculation
+plink2 --bfile chromosome_only_genotype --set-all-var-ids @:# --make-bed --out test --allow-extra-chr ## name snp if not
+plink --bfile test --indep-pairwise 50 5 0.95 --out LD_pruned --allow-extra-chr ## prune snp based LD
+plink --bfile test --extract LD_pruned.prune.in --out LD_pruned --make-bed --allow-extra-chr ## filter SNP genotype data
 ```
 ## bcftools cheatsheet
 #### https://gist.github.com/elowy01/93922762e131d7abd3c7e8e166a74a0b
