@@ -201,6 +201,7 @@ bcftools merge file*.vcf.gz -Oz --threads 30 > merged.files.vcf.gz
 ## SNP marker filteration using plink
 #### https://zzz.bwh.harvard.edu/plink/tutorial.shtml
 #### https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6001694/
+#### https://speciationgenomics.github.io/pca/
 
 ```bash
 ## Convert SNP vcf file into plink binary file
