@@ -213,6 +213,9 @@ plink --bfile output_prefix --maf 0.05 --geno 0.2 --mind 0.2 --make-bed --out fi
 ## filter snp by chromosomes CHROM=HiC_scaffold_1 HiC_scaffold_10 HiC_scaffold_11 .......
 plink --bfile filtered_merged_snps --chr $CHROM --out chromosome_only_genotype --make-bed --allow-extra-chr
 
+## filter genotype data by samples
+plink --bfile chromosome_only_genotype --keep sample_list.txt --make-bed --out test --allow-extra-chr ## sample_list.txt needs to have two columns
+
 ## population stratification analyses
 plink --bfile filtered_output_prefix --genome --out filtered_output_prefix --allow-no-sex --allow-extra-chr
 plink --bfile filtered_output_prefix --read-genome filtered_output_prefix.genome --cluster --ppc 0.05 --allow-no-sex --allow-extra-chr
