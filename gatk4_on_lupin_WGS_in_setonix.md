@@ -234,6 +234,18 @@ plink --bfile test --extract LD_pruned.prune.in --out LD_pruned --make-bed --all
 ## bcftools cheatsheet
 #### https://gist.github.com/elowy01/93922762e131d7abd3c7e8e166a74a0b
 
+## create phylogeny tree from vcf
+```bash
+## use plink to filter your genotype file, see above
+## convert plink binary to vcf
+plink2 --bfile mydata --recode vcf-iid vcf  --out output
+## convert vcf to fasta or phylip using vcf2phylip at https://github.com/edgardomortiz/vcf2phylip
+git clone https://github.com/edgardomortiz/vcf2phylip
+python vcf2phylip/vcf2phylip.py -i LD_pruned.vcf --fasta --min-samples-locus 60
+iqtree -s SNP_data.phy -m GTR+ASC
+
+```
+
 ## GWAS using rMVP
 ### https://github.com/xiaolei-lab/rMVP
 ```bash
