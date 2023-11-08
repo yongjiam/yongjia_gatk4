@@ -238,7 +238,7 @@ plink --bfile test --extract LD_pruned.prune.in --out LD_pruned --make-bed --all
 ```bash
 ## use plink to filter your genotype file, see above
 ## convert plink binary to vcf
-plink2 --bfile mydata --recode vcf-iid vcf  --out output
+plink2 --bfile LD_pruned --recode vcf id-paste=iid --out pruned --allow-extra-chr
 ## convert vcf to fasta or phylip using vcf2phylip at https://github.com/edgardomortiz/vcf2phylip
 git clone https://github.com/edgardomortiz/vcf2phylip
 python vcf2phylip/vcf2phylip.py -i LD_pruned.vcf --fasta --min-samples-locus 60
