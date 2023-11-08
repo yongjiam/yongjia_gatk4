@@ -242,7 +242,7 @@ plink2 --bfile mydata --recode vcf-iid vcf  --out output
 ## convert vcf to fasta or phylip using vcf2phylip at https://github.com/edgardomortiz/vcf2phylip
 git clone https://github.com/edgardomortiz/vcf2phylip
 python vcf2phylip/vcf2phylip.py -i LD_pruned.vcf --fasta --min-samples-locus 60
-iqtree -s SNP_data.phy -m GTR+ASC
+iqtree -s SNP_data.fasta -m GTR+ASC
 
 ```
 
