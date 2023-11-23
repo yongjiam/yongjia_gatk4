@@ -194,8 +194,8 @@ find . input_*_output/out/snpeff/ -type f -name "*ann.vcf" | grep -v nextflow_wo
 
 ## compress, index, and merge vcf
 htsfile compressed.vcf.gz ## check file type
-bcftools view file.vcf -Oz --threads 30 -o file.vcf.gz
-bcftools index file.vcf.gz --threads 30
+bcftools view file.vcf -Oz --threads 30 -o file.vcf.gz or bgzip file.vcf ## compress vcf
+bcftools index file.vcf.gz --threads 30 or tabix file.vcf.gz ## index vcf
 bcftools merge file*.vcf.gz -Oz --threads 30 > merged.files.vcf.gz
 ```
 
