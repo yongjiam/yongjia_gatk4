@@ -232,6 +232,27 @@ plink --bfile filtered_updated_large_snp --chr $(cat chromosome_id.txt) --make-b
 plink2 --bfile chromosome_only_genotype --set-all-var-ids @:# --make-bed --out test --allow-extra-chr ## name snp if not
 plink --bfile test --indep-pairwise 50 5 0.95 --out LD_pruned --allow-extra-chr ## prune snp based LD
 plink --bfile test --extract LD_pruned.prune.in --out LD_pruned --make-bed --allow-extra-chr ## filter SNP genotype data
+
+## modify/offset snp positions
+### fix_chrpos.sh
+SNP="QUAL200MQ50DP6_more_HaplotypeCaller.chr1A_part2.vcf.gz.snp.vcf.gz"
+zcat $SNP | awk -F '\t' 'BEGIN {
+first_file_data["chr1A_part2"] = 424817035
+first_file_data["chr2C_part2"] = 426814308
+first_file_data["chr3C_part2"] = 476205391
+first_file_data["chr4C_part2"] = 360718161
+first_file_data["chr5C_part2"] = 293874722
+first_file_data["chr6C_part2"] = 297374895
+first_file_data["chr7C_part2"] = 442998614
+first_file_data["chr2D_part2"] = 199338498
+first_file_data["chr7D_part2"] = 469736193
+} {if ($1 in first_file_data) $2 += first_file_data[$1]; print}' | bgzip > modified_snp.vcf.gz
+
+## recode and modify chromosome ID
+plink --bfile LD_pruned --recode --out changeChr_LD_pruned --allow-extra-chr ## generate map file
+sed -i 's/_part1//g;s/_part2//g' changeChr_LD_pruned.map ## modify chromosome IDs
+plink --file changeChr_LD_pruned --make-bed --out changeChr_LD_pruned --allow-extra-chr ## convert back to binary files
+
 ```
 ## bcftools cheatsheet
 #### https://gist.github.com/elowy01/93922762e131d7abd3c7e8e166a74a0b
