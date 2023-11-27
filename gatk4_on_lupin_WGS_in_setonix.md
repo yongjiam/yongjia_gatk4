@@ -236,7 +236,7 @@ plink --bfile test --extract LD_pruned.prune.in --out LD_pruned --make-bed --all
 ## modify/offset snp positions
 ### fix_chrpos.sh
 SNP="QUAL200MQ50DP6_more_HaplotypeCaller.chr1A_part2.vcf.gz.snp.vcf.gz"
-zcat $SNP | awk -F '\t' 'BEGIN {
+zcat $SNP | awk -F '\t' -v OFS='\t' 'BEGIN {
 first_file_data["chr1A_part2"] = 424817035
 first_file_data["chr2C_part2"] = 426814308
 first_file_data["chr3C_part2"] = 476205391
