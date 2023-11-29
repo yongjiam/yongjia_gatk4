@@ -259,6 +259,7 @@ plink --file changeChr_LD_pruned --make-bed --out changeChr_LD_pruned --allow-ex
 
 ## create phylogeny tree from vcf
 ```bash
+### solution 1. iqtree
 ## use plink to filter your genotype file, see above
 ## convert plink binary to vcf
 plink2 --bfile LD_pruned --recode vcf id-paste=iid --out pruned --allow-extra-chr
@@ -267,6 +268,11 @@ git clone https://github.com/edgardomortiz/vcf2phylip
 python vcf2phylip/vcf2phylip.py -i LD_pruned.vcf --fasta --min-samples-locus 60
 iqtree -s SNP_data.fasta -m GTR+ASC
 
+### solution 2. vcf2pop webpage tool
+https://github.com/sansubs/vcf2pop
+
+### snphylo
+https://github.com/thlee/SNPhylo/blob/master/docs/install_on_linux.rst
 ```
 
 ## GWAS using rMVP
