@@ -366,3 +366,7 @@ for(i in 2:ncol(phenotype)){
 }
 ```
 
+## understanding QQ plots
+https://jnmaloof.github.io/BIS180L_web/slides/11_QQPlots.html#1
+
+
