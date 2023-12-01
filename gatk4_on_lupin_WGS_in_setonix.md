@@ -278,6 +278,7 @@ https://github.com/thlee/SNPhylo/blob/master/docs/install_on_linux.rst
 
 ## GWAS using rMVP
 ### https://github.com/xiaolei-lab/rMVP
+### https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2800123/
 ```bash
 ## install rMVP
 conda create -n rMVP r=4.2
