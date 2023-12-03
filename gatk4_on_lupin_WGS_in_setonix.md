@@ -231,7 +231,7 @@ plink --bfile filtered_updated_large_snp --chr $(cat chromosome_id.txt) --make-b
 
 ## prune snp based on LD calculation
 plink2 --bfile chromosome_only_genotype --set-all-var-ids @:# --make-bed --out test --allow-extra-chr ## name snp if not
-plink --bfile test --indep-pairwise 50 5 0.95 --out LD_pruned --allow-extra-chr ## prune snp based LD
+plink --bfile test --indep-pairwise 50 5 0.5 --out LD_pruned --allow-extra-chr ## prune snp based LD, per 50 snp
 plink --bfile test --extract LD_pruned.prune.in --out LD_pruned --make-bed --allow-extra-chr ## filter SNP genotype data
 
 ## modify/offset snp positions
@@ -254,6 +254,11 @@ plink --bfile LD_pruned --recode --out changeChr_LD_pruned --allow-extra-chr ## 
 sed -i 's/_part1//g;s/_part2//g' changeChr_LD_pruned.map ## modify chromosome IDs
 plink --file changeChr_LD_pruned --make-bed --out changeChr_LD_pruned --allow-extra-chr ## convert back to binary files
 
+## notes:
+1. no LD pruning for gwas
+2. plink --keep-allele-order ## plink auto assign allele: 0- 1-
+3. plink --biallelic-only strict ## remove multi alleles
+4. plink --set-missing-var-ids @:#
 ```
 ## bcftools cheatsheet
 #### https://gist.github.com/elowy01/93922762e131d7abd3c7e8e166a74a0b
