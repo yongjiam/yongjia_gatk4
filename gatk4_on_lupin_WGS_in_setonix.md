@@ -28,7 +28,7 @@ done
 conda activate bio
 srun --export=all -n 1 -c 64 multiqc -i skylar_raw_qc -n raw_qc raw_fastqc_output &> multiqc_log.txt
 ```
-## prepare input files
+## trim fastq using fastp
 ```bash
 ## workdir
 /scratch/pawsey0399/cxiao/WGS/01.RawData
