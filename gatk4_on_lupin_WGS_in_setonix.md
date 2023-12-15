@@ -1,5 +1,5 @@
 # User guide
-**Guide on setting up and running GATK4 pipeline in Setonix using WGS data**
+**Guide on setting up and running GATK4 pipeline in Setonix**
 ## useful resources
 #### https://gencore.bio.nyu.edu/variant-calling-pipeline-gatk4/
 #### https://github.com/gencorefacility/variant-calling-pipeline-gatk4
