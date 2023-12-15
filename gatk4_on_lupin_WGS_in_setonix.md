@@ -55,6 +55,7 @@ done < SPLIT
 ```
 
 ## Solution 1 = Run GATK step-by-step
+#### https://gatk.broadinstitute.org/hc/en-us/articles/360039568932--How-to-Map-and-clean-up-short-read-sequence-data-efficiently\
 ```bash
 #!/bin/bash --login
 
