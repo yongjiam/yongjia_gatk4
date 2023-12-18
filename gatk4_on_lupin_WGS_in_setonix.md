@@ -6,6 +6,7 @@
 #### https://eriqande.github.io/eca-bioinf-handbook/
 #### https://www.jianshu.com/p/aefd9a0eb67d/
 #### https://jnmaloof.github.io/BIS180L_web/slides/
+#### https://github.com/ShifengCHENG-Laboratory/WWWG2B/tree/main
 
 ## install required tools from conda env file
 ```bash
