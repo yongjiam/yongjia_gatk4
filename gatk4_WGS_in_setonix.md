@@ -203,6 +203,7 @@ bcftools merge file*.vcf.gz -Oz --threads 30 -o merged.files.vcf.gz
 bcftools concat file*.vcf.gz -Oz --threads 64 -o merged.snps.vcf.gz
 
 ##variant filteration
+bcftools view -i 'INFO/QD > 2 & MQ > 40 & INFO/SOR < 4 & INFO/FS < 60 & INFO/MQRankSum > -12.5 & INFO/ReadPosRankSum > -8'
 bcftools view -i 'QUAL > 200 & MQ > 50 & INFO/DP > 5 & INFO/QD > 2 & INFO/SOR < 3 & INFO/FS < 60 & INFO/MQRankSum > -12.5 & INFO/ReadPosRankSum > -8'
 https://gatk.broadinstitute.org/hc/en-us/articles/360035890471-Hard-filtering-germline-short-variants \
 
