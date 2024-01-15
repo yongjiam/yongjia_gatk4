@@ -70,10 +70,10 @@ done < SPLIT
 #SBATCH --export=NONE
 
 conda activate nf-env
-REF=/data/skylar/Reference_genome_old/NLL_v2.fa
+REF=/scratch/pawsey0399/yjia/wheat/WGS/201216_Fielder_pseudomolecules_V1+unanchored_contigs.fasta.gz
 PJAR=/scratch/pawsey0399/yjia/tools/miniconda3/envs/nf-env/share/picard-2.18.29-0/picard.jar
 
-srun --export=all -n 1 -c 15 bwa index 201216_Fielder_pseudomolecules_V1+unanchored_contigs.fasta.gz
+srun --export=all -n 1 -c 15 bwa index $REF
 srun --export=all -n 1 -c 64 java -jar $PJAR CreateSequenceDictionary \
    R=201216_Fielder_pseudomolecules_V1+unanchored_contigs.fasta.gz \
    O=201216_Fielder_pseudomolecules_V1+unanchored_contigs.dict
