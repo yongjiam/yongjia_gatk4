@@ -56,6 +56,28 @@ done < SPLIT
 ```
 
 ## Solution 1 = Run GATK step-by-step
+#### index reference genome
+```bash
+#!/bin/bash --login
+
+#SBATCH --job-name=picard
+#SBATCH --partition=work
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=24:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --export=NONE
+
+conda activate nf-env
+REF=/data/skylar/Reference_genome_old/NLL_v2.fa
+PJAR=/scratch/pawsey0399/yjia/tools/miniconda3/envs/nf-env/share/picard-2.18.29-0/picard.jar
+
+srun --export=all -n 1 -c 15 bwa index 201216_Fielder_pseudomolecules_V1+unanchored_contigs.fasta.gz
+srun --export=all -n 1 -c 64 java -jar $PJAR CreateSequenceDictionary \
+   R=201216_Fielder_pseudomolecules_V1+unanchored_contigs.fasta.gz \
+   O=201216_Fielder_pseudomolecules_V1+unanchored_contigs.dict
+```
 #### https://gatk.broadinstitute.org/hc/en-us/articles/360039568932--How-to-Map-and-clean-up-short-read-sequence-data-efficiently\
 ```bash
 #!/bin/bash --login
