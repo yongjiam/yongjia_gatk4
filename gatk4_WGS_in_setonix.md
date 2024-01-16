@@ -102,6 +102,7 @@ srun --export=all -n 1 -c 15 gatk FixMateInformation -MC true -I mark_fix_NLL100
 srun --export=all -n 1 -c 15 samtools index -@ 15 mark_fix_NLL100.bam ## index bam
 srun --export=all -n 1 -c 15 rm mark_fix_NLL100.bam.sbi ## this index file interferes with downstream
 srun --export=all -n 1 -c 15 gatk HaplotypeCallerSpark -R $REF -I mark_fix_NLL100.bam -ERC GVCF -O mark_fix_NLL100.bam.g.vcf ## haplotype call
+##replace HaplotypeCallerSpark with HaplotypeCaller, some bam csi index could not recognized by HaplotypeCallerSpark
 srun --export=all -n 1 -c 15 rm mark_fix_NLL100.bam
 srun --export=all -n 1 -c 15 bgzip -@ 15 mark_fix_NLL100.bam.g.vcf ## compress gvcf file
 srun --export=all -n 1 -c 5 gatk IndexFeatureFile -I mark_fix_NLL100.bam.g.vcf.gz ## index gvcf file
