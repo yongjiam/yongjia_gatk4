@@ -152,6 +152,9 @@ srun --export=all -n 1 -c 64 gatk VariantFiltration \
 ## https://github.com/dnanexus-rnd/GLnexus/wiki/Getting-Started
 ### static executable: for modern Linux x86-64 hosts, download glnexus_cli from the Releases page and chmod +x glnexus_cli
 
+## add sample header to bam if missed
+https://github.com/IARCbioinfo/addreplacerg-nf
+samtools addreplacerg -r "@RG\tID:file_name\tPG:samtools addreplacerg\tSM:file_name}"
 #!/bin/bash --login
  
 #SBATCH --job-name=gln
