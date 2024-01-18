@@ -147,6 +147,37 @@ srun --export=all -n 1 -c 64 gatk VariantFiltration \
 	--filter-name "FS_filter" -filter "FS > 60.0" \
 	--filter-name "MQ_filter" -filter "MQ < 40.0"
 ```
+## merge gvcf files without indexing
+```bash
+## https://github.com/dnanexus-rnd/GLnexus/wiki/Getting-Started
+### static executable: for modern Linux x86-64 hosts, download glnexus_cli from the Releases page and chmod +x glnexus_cli
+
+#!/bin/bash --login
+ 
+#SBATCH --job-name=gln
+#SBATCH --partition=highmem
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=128
+#SBATCH --time=10:00:00
+#SBATCH --account=pawsey0399
+#SBATCH --mem=980G
+#SBATCH --export=NONE
+conda activate nf-env
+export PATH=$PATH:/scratch/pawsey0399/yjia/tools/
+srun --export=all -n 1 -c 128 glnexus_cli --config gatk --bed TraesFLD2D01G513900.bed -m 980 --threads 128 2Dvcf/*.g.vcf.gz > TraesFLD2D01G513900.bcf
+srun --export=all -n 1 -c 128 bcftools view --threads 64 TraesFLD2D01G513900.bcf | bgzip -@ 4 -c > TraesFLD2D01G513900.vcf.gz
+
+## snp annotation
+### build snpeff database
+cp cds.fa genes.gff protein.fa sequences.fa sequences.fa.fai /data/tools/snpEff/data/fielder
+echo "fielder.genome : fielder" >> snpEff.config
+java -jar snpEff.jar build -gff3 -v fielder
+java -Xmx8g -jar snpEff.jar fielder /data/wheat/fielder/TraesFLD2D01G513900.vcf.gz >  /data/wheat/fielder/TraesFLD2D01G513900.annotated.vcf
+bgzip TraesFLD2D01G513900.annotated.vcf
+tabix -C TraesFLD2D01G513900.annotated.vcf.gz
+bcftools annotate -x ^FORMAT/GT TraesFLD2D01G513900.annotated.vcf.gz > TraesFLD2D01G513900.annotated.simple.vcf
+```
 
 ## Solution 2 = Run GATK nextflow
 ```bash
