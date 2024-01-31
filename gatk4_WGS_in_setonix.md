@@ -168,7 +168,7 @@ samtools addreplacerg -r "@RG\tID:file_name\tPG:samtools addreplacerg\tSM:file_n
 #SBATCH --export=NONE
 conda activate nf-env
 export PATH=$PATH:/scratch/pawsey0399/yjia/tools/
-srun --export=all -n 1 -c 128 glnexus_cli --config gatk --bed TraesFLD2D01G513900.bed -m 980 --threads 128 2Dvcf/*.g.vcf.gz > TraesFLD2D01G513900.bcf
+srun --export=all -n 1 -c 128 glnexus_cli --config gatk --bed TraesFLD2D01G513900.bed -m 980 --threads 128 2Dvcf/*.g.vcf.gz > TraesFLD2D01G513900.bcf ## need to remove GLnexus.DB before next run
 srun --export=all -n 1 -c 128 bcftools view --threads 64 TraesFLD2D01G513900.bcf | bgzip -@ 4 -c > TraesFLD2D01G513900.vcf.gz
 
 ## snp annotation
