@@ -155,6 +155,7 @@ srun --export=all -n 1 -c 64 gatk VariantFiltration \
 ## add sample header to bam if missed
 https://github.com/IARCbioinfo/addreplacerg-nf
 samtools addreplacerg -r "@RG\tID:file_name\tPG:samtools addreplacerg\tSM:file_name}"
+samtools addreplacerg -O BAM -@ 128 -o updated_CRR289962_sort.bam  -r '@RG\tID:CRR289962\tSM:CRR289962\tPL:ILLUMINA' CRR289962_sort.bam
 #!/bin/bash --login
  
 #SBATCH --job-name=gln
