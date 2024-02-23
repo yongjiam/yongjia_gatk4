@@ -298,7 +298,7 @@ plink --bfile filtered_updated_large_snp --chr $(cat chromosome_id.txt) --make-b
 
 ## prune snp based on LD calculation
 plink2 --bfile chromosome_only_genotype --set-all-var-ids @:# --make-bed --out test --allow-extra-chr ## name snp if not
-plink --bfile test --indep-pairwise 50 5 0.5 --out LD_pruned --allow-extra-chr ## prune snp based LD, per 50 snp
+plink --bfile test --indep-pairwise 50 5 0.2 --out LD_pruned --allow-extra-chr ## prune snp based LD, per 50 snp, 5 each step, SNPs with pairwise LD=0.2 (measured by r^2 ) above this threshold will be pruned
 plink --bfile test --extract LD_pruned.prune.in --out LD_pruned --make-bed --allow-extra-chr ## filter SNP genotype data
 
 ## modify/offset snp positions
