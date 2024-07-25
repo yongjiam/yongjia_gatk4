@@ -439,7 +439,10 @@ for(i in 2:ncol(phenotype)){
   gc()
 }
 ```
-
+## use vcftools to filter out vcf file (genotype file in chickpea SNP array), when plink not working (header error)
+```
+vcftools --vcf Karthika_all_experimentsBLUE_GWAS_Mn.genotype.vcf --maf 0.05 --out MAF_karthika_BLUE --recode
+```
 ## understanding QQ plots
 https://jnmaloof.github.io/BIS180L_web/slides/11_QQPlots.html#1
 
