@@ -446,4 +446,13 @@ vcftools --vcf Karthika_all_experimentsBLUE_GWAS_Mn.genotype.vcf --maf 0.05 --ou
 ## understanding QQ plots
 https://jnmaloof.github.io/BIS180L_web/slides/11_QQPlots.html#1
 
+## convert vcf to numeric format for gapit
+```
+# in excel, delete non-relevant columns
+## use sed to convert to numeric
+ 4853  sed -i '' '1!s/0|0/0/g' MAF_normAll_DVRS_noG3_zscore.hapmap.txt
+ 4854  sed -i '' '1!s/1|1/1/g' MAF_normAll_DVRS_noG3_zscore.hapmap.txt
+ 4855  sed -i '' '1!s/0|1/2/g' MAF_normAll_DVRS_noG3_zscore.hapmap.txt
+ 4856  sed -i '' '1!s/1|0/2/g' MAF_normAll_DVRS_noG3_zscore.hapmap.txt
 
+```
