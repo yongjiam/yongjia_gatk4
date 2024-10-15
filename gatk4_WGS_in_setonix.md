@@ -439,6 +439,87 @@ for(i in 2:ncol(phenotype)){
   gc()
 }
 ```
+## estimate genetic heritability
+```
+## vcf to plink
+plink --vcf MAF_normAll_DVRS_noG3_zscore.genotype --make-bed --allow-extra-chr --double-id --out plink
+gcta64 --bfile plink --make-grm --out myGRM
+gcta64 --grm myGRM --pheno phenotype.txt --reml --out pve_results ## first trait, overall variation explained
+```
+```
+how to interpret the results from "gcta64 --grm myGRM --pheno phenotype.txt --reml --out pve_results" :
+Source	Variance	SE
+V(G)	0.178013	0.054004
+V(e)	0.802320	0.057766
+Vp	0.980333	0.063831
+V(G)/Vp	0.181584	0.049840
+logL	-257.608
+logL0	-291.524
+LRT	67.832
+df	1
+Pval	1.1102e-16
+n	538
+```
+
+```
+Key Components in the Output:
+1. V(G): Genetic Variance
+Value: 0.178013
+This represents the variance attributable to genetic factors (i.e., the genetic component of the total variance in the phenotype).
+SE: 0.054004 (Standard error of the genetic variance estimate).
+2. V(e): Environmental (Residual) Variance
+Value: 0.802320
+This is the variance due to environmental or other unexplained factors (i.e., the non-genetic component of the total variance).
+SE: 0.057766 (Standard error of the environmental variance estimate).
+3. Vp: Total Phenotypic Variance
+Value: 0.980333
+This is the total phenotypic variance (i.e., the sum of genetic and environmental variances).
+It is calculated as 
+
+Vp=V(G)+V(e), where:
+0.980333≈0.178013+0.802320
+SE: 0.063831 (Standard error of the total phenotypic variance).
+4. V(G)/Vp: Proportion of Variance Explained (PVE) or Narrow-Sense Heritability (h²)
+Value: 0.181584
+This is the ratio of genetic variance to total phenotypic variance, also known as narrow-sense heritability (h²). It represents the proportion of the total phenotypic variance that can be explained by genetic factors:
+
+SE: 0.049840 (Standard error of the heritability estimate).
+Interpretation: About 18.2% of the phenotypic variation in this dataset is due to genetic factors.
+5. logL: Log Likelihood of the Model with Genetic Component
+Value: -257.608
+This is the log likelihood of the model when the genetic component is included. Higher values (closer to zero) indicate a better model fit.
+6. logL0: Log Likelihood of the Null Model (No Genetic Component)
+Value: -291.524
+This is the log likelihood of the null model, which assumes no genetic component (i.e., all variation is environmental).
+Interpretation: The lower log likelihood of this model (compared to logL) suggests that the model with a genetic component fits the data better.
+7. LRT: Likelihood Ratio Test Statistic
+Value: 67.832
+This is the likelihood ratio test statistic that compares the model with a genetic component to the null model (no genetic component).
+
+LRT=2×(logL−logL0)=2×(−257.608−(−291.524))=67.832
+A higher LRT indicates stronger evidence in favor of the genetic model over the null model.
+8. df: Degrees of Freedom
+Value: 1
+The degrees of freedom for the likelihood ratio test. Since you're testing one parameter (the genetic component), the degrees of freedom is 1.
+9. Pval: P-value of the Likelihood Ratio Test
+Value: 1.1102e-16
+This is the p-value corresponding to the LRT statistic. A very small p-value (such as this) indicates strong evidence that the genetic component is significantly different from zero, meaning that genetic factors contribute significantly to the phenotypic variation.
+10. n: Sample Size
+Value: 538
+This is the number of individuals (samples) used in the analysis.
+Interpretation of the Results:
+Heritability (h²): The genetic variance accounts for about 18.2% of the total phenotypic variance (narrow-sense heritability). This suggests that the phenotype has a moderate genetic basis.
+Significance: The very low p-value (1.1102e-16) indicates that the genetic component is highly significant, meaning that the contribution of genetics to the phenotype is statistically significant.
+Model Fit: The likelihood ratio test (LRT = 67.832) shows that the model with a genetic component fits the data much better than the null model without a genetic component.
+In summary, your analysis suggests that the genetic factors explain about 18.2% of the variance in the phenotype, and this contribution is highly significant.
+```
+
+```
+plink --bfile plink --pheno phenotype.txt --assoc --adjust --allow-no-sex --allow-extra-chr --out plink_gwas_results
+
+cut -f1,2,4 phenotype.txt > phenotype_T1.txt
+gcta64 --bfile plink --mlma --pheno phenotype_T1.txt --out mlma_results
+```
 ## use vcftools to filter out vcf file (genotype file in chickpea SNP array), when plink not working (header error)
 ```
 vcftools --vcf Karthika_all_experimentsBLUE_GWAS_Mn.genotype.vcf --maf 0.05 --out MAF_karthika_BLUE --recode
@@ -456,3 +537,4 @@ https://jnmaloof.github.io/BIS180L_web/slides/11_QQPlots.html#1
  4856  sed -i '' '1!s/1|0/2/g' MAF_normAll_DVRS_noG3_zscore.hapmap.txt
 
 ```
+
